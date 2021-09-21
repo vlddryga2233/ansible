@@ -51,13 +51,13 @@ resource "google_compute_instance" "default1" {
     inline = ["echo 'Hello world!'"]
     connection {
       type        = "ssh"
-      host        = self.network_interface.0.access_config
+      host        = self.network_interface.0.access_config.0.nat_ip
       user        = "ansible"
       private_key = file(var.ssh_key_private)
     }
   }
   provisioner "local-exec" {
-    command = "ansible -i '${self.network_interface.0.access_config}' -m ping"
+    command = "ansible -i '${self.network_interface.0.access_config.0.nat_ip}' -m ping"
   }
   service_account {
     email  = google_service_account.default.email
