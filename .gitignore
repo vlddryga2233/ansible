@@ -1,0 +1,3 @@
+.terraform*
+terraform*
+app_cred.json
