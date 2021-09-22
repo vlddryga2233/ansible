@@ -1,3 +1,4 @@
 .terraform*
 terraform*
 app_cred.json
+.gitignore

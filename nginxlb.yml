@@ -1,0 +1,8 @@
+---
+- name: Test Connection to webserver
+  host: all
+  become: yes
+
+  tasks:
+  - name: ping server
+    ping: 
