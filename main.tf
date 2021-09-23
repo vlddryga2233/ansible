@@ -33,7 +33,7 @@ resource "google_compute_instance" "default1" {
   machine_type = "e2-medium"
   zone         = var.zone
 
-  tags = ["allow-http"]
+  tags = ["http-server"]
   boot_disk {
     initialize_params {
       image = data.google_compute_image.linux.self_link
@@ -52,12 +52,12 @@ resource "google_compute_instance" "default1" {
     connection {
       type        = "ssh"
       host        = self.network_interface.0.access_config.0.nat_ip
-      user        = "ansible"
+      user        = "vlad"
       private_key = file(var.ssh_key_private)
     }
   }
   provisioner "local-exec" {
-    command = "ansible all -i '${self.network_interface.0.access_config.0.nat_ip},' -m ping"
+    command = "ansible-playbook  -i '${self.network_interface.0.access_config.0.nat_ip},' nginxlb.yml"
   }
   service_account {
     email  = google_service_account.default.email
@@ -69,7 +69,7 @@ resource "google_compute_instance" "default2" {
   machine_type = "e2-medium"
   zone         = var.zone
 
-  tags = ["allow-http"]
+  tags = ["http-server"]
 
   boot_disk {
     initialize_params {
@@ -88,36 +88,12 @@ resource "google_compute_instance" "default2" {
     connection {
       type        = "ssh"
       host        = self.network_interface.0.access_config.0.nat_ip
-      user        = "ansible"
+      user        = "vlad"
       private_key = file(var.ssh_key_private)
     }
   }
   provisioner "local-exec" {
-    command = "ansible all -i '${self.network_interface.0.access_config.0.nat_ip},' -m ping"
-  }
-  service_account {
-    email  = google_service_account.default.email
-    scopes = ["cloud-platform"]
-  }
-}
-resource "google_compute_instance" "default" {
-  name         = "windows-webserver"
-  machine_type = "e2-medium"
-  zone         = var.zone
-
-  tags = ["allow-http"]
-
-  boot_disk {
-    initialize_params {
-      image = data.google_compute_image.default.self_link
-    }
-  }
-
-  network_interface {
-    network = "default"
-    access_config {
-
-    }
+    command = "ansible-playbook -i '${self.network_interface.0.access_config.0.nat_ip},' nginxlb.yml"
   }
   service_account {
     email  = google_service_account.default.email
