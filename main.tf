@@ -57,7 +57,7 @@ resource "google_compute_instance" "default1" {
     }
   }
   provisioner "local-exec" {
-    command = "ansible-playbook  -i '${self.network_interface.0.access_config.0.nat_ip},' nginxlb.yml"
+    command = "ansible-playbook  -i '${self.network_interface.0.access_config.0.nat_ip},' nginxweb.yml"
   }
   service_account {
     email  = google_service_account.default.email
@@ -93,7 +93,44 @@ resource "google_compute_instance" "default2" {
     }
   }
   provisioner "local-exec" {
-    command = "ansible-playbook -i '${self.network_interface.0.access_config.0.nat_ip},' nginxlb.yml"
+    command = "ansible-playbook -i '${self.network_interface.0.access_config.0.nat_ip},' nginxweb.yml"
+  }
+  service_account {
+    email  = google_service_account.default.email
+    scopes = ["cloud-platform"]
+  }
+}
+
+resource "google_compute_instance" "default3" {
+  name         = "linux-webserver"
+  machine_type = "e2-medium"
+  zone         = var.zone
+
+  tags = ["http-server"]
+
+  boot_disk {
+    initialize_params {
+      image = data.google_compute_image.linux.self_link
+    }
+  }
+
+  network_interface {
+    network = "default"
+    access_config {
+
+    }
+  }
+  provisioner "remote-exec" {
+    inline = ["echo 'Hello world!'"]
+    connection {
+      type        = "ssh"
+      host        = self.network_interface.0.access_config.0.nat_ip
+      user        = "vlad"
+      private_key = file(var.ssh_key_private)
+    }
+  }
+  provisioner "local-exec" {
+    command = "ansible-playbook -i '${self.network_interface.0.access_config.0.nat_ip},' -e  lb.yml"
   }
   service_account {
     email  = google_service_account.default.email
