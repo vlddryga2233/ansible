@@ -130,7 +130,7 @@ resource "google_compute_instance" "default3" {
     }
   }
   provisioner "local-exec" {
-    command = "ansible-playbook -i '${self.network_interface.0.access_config.0.nat_ip},' -e  lb.yml"
+    command = "ansible-playbook -i '${self.network_interface.0.access_config.0.nat_ip},' -e 'server1=${resource.google_compute_instance.default1.network_interface.0.access_config.0.nat_ip} server2=${resource.google_compute_instance.default2.network_interface.0.access_config.0.nat_ip'  lb.yml"
   }
   service_account {
     email  = google_service_account.default.email
