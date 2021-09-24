@@ -4,8 +4,8 @@
   become: yes
 
   vars:
-    source_file: /homve/vlad/ansible/default.j2
-    destin_folder: /ect/nginx/sites-available
+    source_file: /home/vlad/ansible/default.j2
+    destin_folder: /etc/nginx/sites-available
 
   tasks:
   - name: update packages
@@ -22,6 +22,6 @@
     template: src={{source_file}} dest={{destin_folder}}/default
     notify: restart nginx
 
-   handlers:
-   - name: restart nginx
-     service: name=nginx state=restarted
+  handlers:
+  - name: restart nginx
+    service: name=nginx state=restarted
