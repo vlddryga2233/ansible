@@ -5,9 +5,9 @@
     <title>Ansible</title>
   </head>
   <body>
-    <p>Hello from Terraform+Ansible</p>
-    <p>Hosted on {{ ansible_os_family }}</p>
-    <p>ip iaddress: {{ ansible_default_ipv4.address }}</p>
+    <p>Hello from Terraform + Ansible</p>
+    <p>This machine is {{ ansible_hostname }} running {{ ansible_distribution }} {{ ansible_distribution_version }}</p>
+    <p>Ip address: {{ ansible_default_ipv4.address }}</p>
+
   </body>
 </html>
-
