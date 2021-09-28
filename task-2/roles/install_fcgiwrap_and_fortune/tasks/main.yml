@@ -6,5 +6,6 @@
     state: latest
 
 - name: install fcgiwrap
-  apt: fcgiwrap
-  state: latest
+  apt:
+    name: fcgiwrap
+    state: latest
