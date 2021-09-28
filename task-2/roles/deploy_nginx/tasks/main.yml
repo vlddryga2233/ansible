@@ -1,2 +1,11 @@
 ---
 # tasks file for deploy_nginx
+ - name: update packages
+   apt:
+     update_cache: yes
+     force_apt_get: yes
+
+ - name: install nginx
+   apt:
+     name: nginx
+     state: latest

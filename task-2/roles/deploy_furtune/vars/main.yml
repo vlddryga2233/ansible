@@ -1,2 +1,5 @@
 ---
 # vars file for deploy_furtune
+
+destin_folder: /etc/nginx/sites-available
+python_destination_folder: /usr/lib/cgi-bin

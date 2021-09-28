@@ -1,2 +1,6 @@
 ---
 # handlers file for deploy_furtune
+ - name: restart nginx
+   service:
+     name: nginx
+     state: restarted

@@ -1,2 +1,10 @@
 ---
 # tasks file for install_fcgiwrap_and_fortune
+- name: install fortune
+  apt:
+    name: fortune
+    state: latest
+
+- name: install fcgiwrap
+  apt: fcgiwrap
+  state: latest

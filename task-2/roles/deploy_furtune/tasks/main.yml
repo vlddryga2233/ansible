@@ -1,2 +1,14 @@
 ---
 # tasks file for deploy_furtune
+- name: generate default configure file
+  template: default.j2 dest={{destin_folder}}/default
+  notify: nginx restart
+
+- name: create directory for cgi
+  file:
+    path: /usr/lib/cgi-bin
+    state: directory
+
+ - name: generate python app
+   template: test.j2 dest={{python_destination_folder}}/test.py  mode=755
+   notify: nginx restart
