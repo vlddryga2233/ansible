@@ -1,2 +1,5 @@
 ---
 # tasks file for configure_load_balancer
+- name: generate default file
+  template: src=default.j2 dest={{destin_folder}}/default
+  notify: restart nginx
