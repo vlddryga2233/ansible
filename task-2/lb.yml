@@ -1,0 +1,27 @@
+---
+- name: Configure load-balancer
+  hosts: all
+  become: yes
+
+  vars:
+    source_file: /home/vlad/ansible/task-2/default.j2
+    destin_folder: /etc/nginx/sites-available
+
+  tasks:
+  - name: update packages
+    apt:
+      update_cache: yes
+      force_apt_get: yes
+
+  - name: Install nginx
+    apt:
+      name: nginx
+      state: latest
+
+  - name: generate default file
+    template: src={{source_file}} dest={{destin_folder}}/default
+    notify: restart nginx
+
+  handlers:
+  - name: restart nginx
+    service: name=nginx state=restarted

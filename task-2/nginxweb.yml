@@ -1,0 +1,30 @@
+---
+- name: Configure webserver
+  hosts: all
+  become: yes
+
+  vars:
+    source_file: /home/vlad/ansible/index.j2
+    destin_folder: /var/www/html
+
+  tasks:
+  - name: ping server
+    ping:
+
+  - name: update
+    apt:
+      update_cache: yes
+      force_apt_get: yes
+
+  - name: install Nginx
+    apt:
+     name: nginx
+     state: latest
+
+  - name: generate index.html
+    template: src={{ source_file }} dest={{ destin_folder }}/index.html
+    notify: restart nginx
+
+  handlers:
+  - name: restart nginx
+    service: name=nginx state=restarted
