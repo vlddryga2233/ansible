@@ -1,0 +1,7 @@
+region = "PASTE_YOUR_REGION"
+
+zone = "PASTE_YOUR_ZONE"
+
+credentials = "PAST_YOUR_ACCONT_CREDENTIALS"
+
+project = "PAST_YOUR_PROJECT_ID_HERE"
