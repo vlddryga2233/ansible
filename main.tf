@@ -19,17 +19,18 @@ resource "google_service_account" "default" {
   display_name = "Service Account"
 }
 
-data "google_compute_image" "default" {
-  family  = "windows-2016"
-  project = "windows-cloud"
-}
 data "google_compute_image" "linux" {
   family  = "ubuntu-2004-lts"
   project = "ubuntu-os-cloud"
 }
 
+data "google_compute_image" "debian" {
+  family  = "debian-10"
+  project = "debian-cloud"
+}
+
 resource "google_compute_instance" "default1" {
-  name         = "nginx-lb"
+  name         = "nginx-webserver-1"
   machine_type = "e2-medium"
   zone         = var.zone
 
@@ -65,7 +66,7 @@ resource "google_compute_instance" "default1" {
   }
 }
 resource "google_compute_instance" "default2" {
-  name         = "linux-webserver"
+  name         = "nginx-webserver-2"
   machine_type = "e2-medium"
   zone         = var.zone
 
@@ -73,7 +74,7 @@ resource "google_compute_instance" "default2" {
 
   boot_disk {
     initialize_params {
-      image = data.google_compute_image.linux.self_link
+      image = data.google_compute_image.debian.self_link
     }
   }
 
@@ -102,7 +103,7 @@ resource "google_compute_instance" "default2" {
 }
 
 resource "google_compute_instance" "default3" {
-  name         = "linux-load-balancer"
+  name         = "nginx-load-balancer"
   machine_type = "e2-medium"
   zone         = var.zone
 
