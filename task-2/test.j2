@@ -1,0 +1,9 @@
+#!/usr/bin/python3
+import subprocess
+import cgi
+print ("Content-Type: text/html")
+print()
+print("<p>This machine is {{ ansible_hostname }} running {{ ansible_distribution }} {{ ansible_distribution_version }}</p>")
+print("<p>Ip address: {{ ansible_default_ipv4.address }}</p>")
+output=subprocess.getoutput("/usr/games/fortune")
+print(output)
